@@ -1,0 +1,48 @@
+
+textarea, select, input, button { 
+	outline: none; 
+}
+body {
+	/*border:1px solid red;*/
+	background-color: #aaa;
+	height:98vh;
+	padding: 0px;
+	display:flex;
+	justify-content: center;
+	align-content: center;
+}
+div {
+	border:1px solid green;
+}
+h1 {
+
+}
+
+footer {
+	position:absolute;
+	height:30px;
+/*	border: 1px solid red;
+*/	margin: 0;
+	padding:2px;
+	bottom:0;
+}
+p {
+	margin: 0;
+	padding:2px;
+}
+.tile {
+	border: 1px dashed red;
+	height: 100px;
+	width:100px;
+	position: absolute;
+}
+
+#game-board {
+	align-self: center;
+	position:relative;
+}
+
+main {
+	display: flex;
+	justify-content: center;
+}
