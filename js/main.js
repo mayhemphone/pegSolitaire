@@ -4,8 +4,13 @@
 		//could also give hints too
 
 	//random board generator
+		//works, just needs controls from user / function to randomize each property
 	//custom board builder
 	//select from boards
+	//animate the circle pop
+		//works
+	//change colors for game?
+
 
 document.addEventListener('DOMContentLoaded', function(){
 	console.log('Loaded the JS')
@@ -23,13 +28,15 @@ var exceptions = {
 };
 
 //the starting empty spot
-var startingPosition = "3-3"
+// var startingPosition = "3-3"
+var startingPosition = Math.floor(rows/2)+"-"+Math.floor(columns/2)
 
 //playerMove array stores what two pegs they have chosen
 var playerMove = []
 var player1 = []
 var player2 = []
 var score = 32
+var tempPop
 
 // Or:
 // return Array.prototype.slice.call(arr).sort(); // For array-like objects
@@ -229,7 +236,11 @@ function removeTile (first, second, middle){
 	console.log(first, "is now empty")
 	document.getElementById(second).setAttribute("class","tilePeg")
 	console.log(second, "is now filled")
-	document.getElementById(middle).setAttribute("class","tileEmpty")
+	document.getElementById(middle).setAttribute("class","popped")
+	tempPop = middle
+	setTimeout(popped, 1000)
+	
+
 	console.log(middle, "is now empty")
 	// document.getElementById(middle).setAttribute("class","tileEmpty")
 	playerMove = []
@@ -252,4 +263,8 @@ function selectTile (a) {
 		// console.log("clicked a tile, now it is a:", a.getAttribute("class"))
 		
 	}
+}
+
+function popped (){
+	document.getElementById(tempPop).setAttribute("class","tileEmpty")
 }
