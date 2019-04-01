@@ -89,7 +89,7 @@ function drawTile (left, top, column, row, peg){
 	//Check to see if this is the starting empty spot
 	if (position == startingPosition){
 		console.log("THIS IS THE EMPTY ONE")
-		aTile.setAttribute("class","tile")	
+		aTile.setAttribute("class","tileEmpty")	
 
 	}else {
 		//style it full
@@ -107,9 +107,10 @@ function drawTile (left, top, column, row, peg){
 
 function clicker (){
 
-	if (playerMove.length ===0 && this.getAttribute("class") === "tile" || 
+	if (playerMove.length ===0 && this.getAttribute("class") === "tileEmpty" || 
 		playerMove.length === 1 && this.getAttribute("class") === "tilePeg") {
 		console.log("Not an option")
+
 		return;
 	}
 
@@ -167,20 +168,45 @@ function checkMove (){
 		//see if this is viable
 		console.log("colums equal:", firstC-secondC)
 		console.log("rows equal:", firstR-secondR)
+
 		if (Math.abs((firstC - secondC)) === 2 && firstR == secondR){
+		//checks horizontal
 			console.log("IT WORKED")
 		//and do the class changes etc
 			var middleTile = (secondR)+"-"+(firstC+1)
+
 			console.log("middle tile location:", middleTile)
-			removeTile(playerMove[0],playerMove[1],middleTile)
+			console.log(document.getElementById(middleTile).getAttribute)
+
+			if(document.getElementById(middleTile).getAttribute("class")=="tileEmpty"){
+				console.log("middle is empty")
+				playerMove.pop()
+				console.log(playerMove)
+				return;
+			}else {
+				removeTile(playerMove[0],playerMove[1],middleTile)
+			}
 
 		} else if(Math.abs((firstR - secondR)) === 2 && firstC == secondC){
+			//checks vertical
 			var middleTile = (firstR+1)+"-"+(secondC)
+
 			console.log("middle tile location:", middleTile)
-			removeTile(playerMove[0],playerMove[1],middleTile)
+			console.log(document.getElementById(middleTile))
+
+			if(document.getElementById(middleTile).getAttribute("class")=="tileEmpty"){
+				console.log("middle is empty")
+				playerMove.pop()
+				console.log(playerMove)
+				return;
+			}else {
+				removeTile(playerMove[0],playerMove[1],middleTile)
+			}
 
 		} else {
 			console.log("nah son")
+			playerMove.pop()
+			console.log(playerMove)
 		}
 
 			//if viable move, pop both out of the playerMove array
@@ -194,17 +220,18 @@ function removeTile (first, second, middle){
 	console.log(first)
 	console.log(second)
 	score--
+	document.getElementById('remaining').innerText = score
 	console.log("score is now:",score)
 
 	
 	// remove glow from both, and set empty on first and middle
-	document.getElementById(first).setAttribute("class","tile")
+	document.getElementById(first).setAttribute("class","tileEmpty")
 	console.log(first, "is now empty")
 	document.getElementById(second).setAttribute("class","tilePeg")
 	console.log(second, "is now filled")
-	document.getElementById(middle).setAttribute("class","tile")
+	document.getElementById(middle).setAttribute("class","tileEmpty")
 	console.log(middle, "is now empty")
-	// document.getElementById(middle).setAttribute("class","tile")
+	// document.getElementById(middle).setAttribute("class","tileEmpty")
 	playerMove = []
 	
 	// update counter

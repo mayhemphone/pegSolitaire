@@ -48,6 +48,15 @@ h3 {
 	position: absolute;
 	border-radius: 25px;
 }
+.tileEmpty{
+	border: 1px solid #555;
+	background-color: ;
+	height: 50px;
+	width:50px;
+	margin: 25px; 
+	position: absolute;
+	border-radius: 25px;
+}
 .tilePeg {
 	border: 1px solid #555;
 	background-color: #F66;
