@@ -1,20 +1,11 @@
 //STRETCH GOALS
-	//alert with no more moves
-		//has to push and pop out of array, and check each time what moves are avail
-		//could also give hints too
 
 	//random board generator
 		//works, just needs controls from user / function to randomize each property
 	//custom board builder
 	//select from boards
-	//animate the circle pop
-		//works
 	//change colors for game?
 
-
-document.addEventListener('DOMContentLoaded', function(){
-	// console.log('Loaded the JS')
-})
 var tileHeight = "100px"
 var tilewidth ="100px"
 var gameBoard = document.getElementById('game-board')
@@ -36,6 +27,7 @@ var player1 = []
 var player2 = []
 var score = 32
 var tempPop
+var foundMove = 0
 drawBoard();
 
 
@@ -82,7 +74,6 @@ function drawTile (left, top, column, row, peg){
 	var position = row+"-"+column;
 
 	// Create Tiles
-	// console.log("drawing tile", position)
 	var aTile = document.createElement("div")
 	aTile.setAttribute("Id",row+"-"+column)
 
@@ -91,28 +82,27 @@ function drawTile (left, top, column, row, peg){
 	
 	//Check to see if this is the starting empty spot
 	if (position == startingPosition){
-		// console.log("THIS IS THE EMPTY ONE")
+		// style it empty
 		aTile.setAttribute("class","tileEmpty")	
-
 	}else {
-		//style it full
+		// style it full
 		aTile.setAttribute("class","tilePeg")
-
 	}
-	//add event listener
+	// add event listener
 	aTile.addEventListener("click", clicker)
-	// Adding it to an array as an object that includes use data
-
+	
 	// Append that shit
 	gameBoard.appendChild(aTile)
 }
 
 function clicker (){
 
+	// is this an empty spot on first click, 
+	// or is it a full spot on the second click?
 	if (playerMove.length ===0 && this.getAttribute("class") === "tileEmpty" || 
 		playerMove.length === 1 && this.getAttribute("class") === "tilePeg") {
-		// console.log("Not an option")
 
+		//if so, don't continue the function
 		return;
 	}
 
@@ -125,6 +115,7 @@ function clicker (){
 	}  else{
 		// Store the click
 		playerMove.push(this.getAttribute("Id"))
+		
 		// Make the selection glow
 		selectTile(this)
 
@@ -134,16 +125,17 @@ function clicker (){
 }
 
 function selectTile (a) {
-	//TEMP turns on glow
+	// if it is the first click, make it glow
 	if (a.getAttribute("class")=="tilePeg"){
 		//apply glow style
 		a.setAttribute("class","tilePeg tileGlow")
-		// console.log("clicked a tilepeg, now it is a:", a.getAttribute("class"))
-
+		console.log(a)
+		 
+	// if it is the second click, turn off the glow
 	} else if (a.getAttribute("class")=="tilePeg tileGlow"){
 		//remove glow
 		a.setAttribute("class","tilePeg")
-		// console.log("clicked a tile, now it is a:", a.getAttribute("class"))
+		console.log(a)
 		
 	}
 }
@@ -211,41 +203,30 @@ function checkMove (){
 			}
 
 		} else {
-			// console.log("nah son")
 			playerMove.pop()
-			// console.log(playerMove)
 		}
-
-			//if viable move, pop both out of the playerMove array
-			
 	}
 }
 
 function removeTile (first, second, middle){
 	//should only run if successfull checkMove
-	// console.log("removeTile")
-	// console.log(first)
-	// console.log(second)
+	
+	//update the score
 	score--
 	document.getElementById('remaining').innerText = score
-	// console.log("score is now:",score)
-
 	
 	// remove glow from both, and set empty on first and middle
 	document.getElementById(first).setAttribute("class","tileEmpty")
-	// console.log(first, "is now empty")
-	document.getElementById(second).setAttribute("class","tilePeg")
-	// console.log(second, "is now filled")
 	document.getElementById(middle).setAttribute("class","popped")
+	document.getElementById(second).setAttribute("class","tilePeg")
+	
+	// after the pop css class finishes animation, change it to tileEmpty
+	// have to pass middle data through a variable, set timeout does not allow
 	tempPop = middle
 	setTimeout(popped, 300)
 	
 	playerMove = []
 	setTimeout(remainingMoves, 300)
-	
-	// update counter
-	// detect for 1 piece left
-	// STRETCH GOAL - check for remaining moves
 }
 
 function popped (){
@@ -258,11 +239,12 @@ function popped (){
 function remainingMoves (){
 	//get all the pegs on the board
 	var pegsLeft = document.getElementsByClassName('tilePeg')
-	console.log(pegsLeft)
-
+	// console.log(pegsLeft)
+	// set foundMove to zero at the start of the turn.
+	foundMove = 0
 	//loop through each, but exit out if a move is found.
 	for (i=0;i<pegsLeft.length;i++){
-
+		
 		var thisC = parseInt(pegsLeft[i].id.charAt(2))
 		var thisR = parseInt(pegsLeft[i].id.charAt(0))
 		
@@ -276,36 +258,27 @@ function remainingMoves (){
 		var upTwo = document.getElementById((thisR-2)+'-'+(thisC))
 		var downTwo = document.getElementById((thisR+2)+'-'+(thisC))
 
-	//can dry by making its own funciton and pass the direction and directionTwo
-		// check left
-		if (left==null || leftTwo==null){
-			// console.log(pegsLeft[i].id," has a null left")
-		} else if (document.getElementById(left.id).getAttribute("class")=="tilePeg" && document.getElementById(leftTwo.id).getAttribute("class")=="tileEmpty"){
-			console.log((thisR)+'-'+(thisC)," has a move to the left")
-			return;
-		}
-		// check right
-		if (right==null || rightTwo==null){
-			// console.log(pegsLeft[i].id," has a null left")
-		} else if (document.getElementById(right.id).getAttribute("class")=="tilePeg" && document.getElementById(rightTwo.id).getAttribute("class")=="tileEmpty"){
-			console.log((thisR)+'-'+(thisC)," has a move to the right")
-			return;
-		}
-		// check up
-		if (up==null || upTwo==null){
-			// console.log(pegsLeft[i].id," has a null left")
-		} else if (document.getElementById(up.id).getAttribute("class")=="tilePeg" && document.getElementById(upTwo.id).getAttribute("class")=="tileEmpty"){
-			console.log((thisR)+'-'+(thisC)," has a move to the up")
-			return;
-		}
-		
-		// check down
-		if (down==null || downTwo==null){
-			// console.log(pegsLeft[i].id," has a null left")
-		} else if (document.getElementById(down.id).getAttribute("class")=="tilePeg" && document.getElementById(downTwo.id).getAttribute("class")=="tileEmpty"){
-			console.log((thisR)+'-'+(thisC)," has a move to the down")
-			return;
-		}
+
+		checkDirection(left, leftTwo)
+		checkDirection(right, rightTwo)
+		checkDirection(up, upTwo)
+		checkDirection(down, downTwo)
+
+		if (foundMove === 1){
+			// the moment we find a move, exit out of this loop, saving processing
+		 	return;
+		} 
 	}
+	// end of game function triggers here
 	console.log("OUT OF MOVES")
+	
+}
+function checkDirection(direction, directionTwo) {
+	if (direction==null || directionTwo==null){
+		//this needs to be detected, so it doesn't try and pass through the else if
+		
+	} else if (document.getElementById(direction.id).getAttribute("class")=="tilePeg" && document.getElementById(directionTwo.id).getAttribute("class")=="tileEmpty"){
+		console.log(" has a move to the", direction)
+		foundMove = foundMove + 1
+	}
 }
