@@ -452,7 +452,7 @@ function inputScore (){
 function pushData (){
 	localStorage.clear()
 
-	var scores = { 'Justin': 23, 'Samantha': 8, 'Nathan': 3 };
+	var scores = { 'Justin': 23, 'Miguel': 10, 'Samantha': 8, 'Nathan': 3 };
 
 	// Put the object into storage
 	localStorage.setItem('scores', JSON.stringify(scores));
