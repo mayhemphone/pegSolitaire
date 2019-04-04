@@ -21,6 +21,9 @@ var tempPop
 var foundMove = 0
 var retrievedScores 
 
+// test data pushed until I have a if statement for local storage
+pushData ()
+
 //Draw the original board to start
 originalBoard()
 
@@ -360,6 +363,7 @@ function getScores (){
 	// parse string into an object
 	scoresObject = JSON.parse(retrievedScores)
 
+//BUG - if this is null, we need to not sort, and start fresh
 	// sort by lowest score
 	keysSorted = Object.keys(scoresObject).sort(function(a,b){return scoresObject[b]-scoresObject[a]})
 
