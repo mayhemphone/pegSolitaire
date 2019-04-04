@@ -85,24 +85,15 @@ a {
 	margin: 0 1em;
 
 }
-button {
-	border: 1em solid #f66;
-	background-color: #F66;
-	height: 1em;
-	margin: 0 .2em; 
-	border-radius: 1em;
-	font-size: 1.7em;
-	line-height: 0em;
-	color: white;
-	font-family: 'Dosis', sans-serif;
-	text-transform: uppercase;
-}
-button:active {
-	border: 1em solid #Fcc;
-	background-color: #Fcc;
-	color: #FFF;
-
-}
+/*.tile {
+	border: 1px solid #555;
+	background-color: ;
+	height: 50px;
+	width: 50px;
+	margin: 25px; 
+	position: absolute;
+	border-radius: 25px;
+}*/
 .tileEmpty{
 	border: 2px solid #f66;
 	height: 50px;
@@ -133,6 +124,7 @@ button:active {
 	margin: 25px; 
 	position: absolute;
 	border-radius: 25px;
+	/* set time duration to your needs */
 	animation: gradient 300ms;
 	background: #aaa;
 	color: #f88;
@@ -152,6 +144,7 @@ button:active {
 	left: 50%;
 	top:50%;
 	margin:-8.5em -15em;
+	/*border: 1px solid black;*/
 	background-color: rgba(55, 55, 55, 0.9);
 	color: white;
 	box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, .50);
@@ -177,6 +170,8 @@ button:active {
 	position: absolute;
 	top: 2em;
 	right:2em;
+	/*width: ;
+	height: ;*/
 }
 #topRight h1, h3 {
 	display: block;
@@ -194,6 +189,26 @@ button:active {
 	font-size: 2em;
 	text-align: center;
 }
+
+button {
+	border: 1em solid #f66;
+	background-color: #F66;
+	height: 1em;
+	margin: 0 .2em; 
+	border-radius: 1em;
+	font-size: 1.7em;
+	line-height: 0em;
+	color: white;
+	font-family: 'Dosis', sans-serif;
+	text-transform: uppercase;
+}
+
+button:active {
+	border: 1em solid #Fcc;
+	background-color: #Fcc;
+	color: #FFF;
+
+}
 .lowScoreScreen{
 	position: absolute;
 	height: 45em;
@@ -201,6 +216,7 @@ button:active {
 	left: 50%;
 	top:50%;
 	margin:-25em -15em;
+	/*border: 1px solid black;*/
 	background-color: rgba(55, 55, 55, 0.9);
 	color: white;
 	box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, .50);
@@ -217,6 +233,7 @@ button:active {
 	font-family: 'Dosis', sans-serif;
 	font-size: 4em
 }
+
 .lowScoreScreen h3 {
 	align-self: center;
 	display: inline-block;
@@ -225,6 +242,7 @@ button:active {
 	font-family: 'Dosis', sans-serif;
 	font-size: 6em
 }
+
 .lowScoreScreen button{
 	margin-top: .5em;
 	vertical-align: bottom;
@@ -235,10 +253,12 @@ button:active {
 	font-size: 3em;
 	color: white;
 	font-family: 'Dosis', sans-serif;
+
 }
 .lowScoreScreen ul {
 	height: 30em;
 }
+
 .gameGoing2{
 	display: none;
 }
@@ -249,4 +269,7 @@ button:active {
 	font-size: .6em;
 	text-align: center;
 	font-family: 'Dosis', sans-serif;
+
+
+
 }

@@ -3,21 +3,40 @@
 	<head>
 		<title>Peg Solitaire</title>
 		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<link href="https://fonts.googleapis.com/css?family=Dosis" rel="stylesheet">
 	</head>
 	<body>
 		<header>
 			<title></title>
 		</header>
-		<nav>
-			
-		</nav>
 		<main>
+			<div id="topRight">
+				<h1 id="score">32</h1>
+				<h3>REMAINING</h3>
+			</div>
 			<div id="game-board"></div>
+			<div class="gameGoing">
+				<h2>You're out of moves!</h2>
+				<h2 id="final">Pieces remaining: </h2>
+				<button id="playAgain">Play again</button>
+				<button id="lowScore">Low Scores</button>
+			</div>
+			<div class="gameGoing2">
+				<h2>LOWEST SCORES</h2>
+				<ul id="scoreBoard">
+					<!-- <li>Billy: 5</li>
+					<li>Susan: 10</li>
+					<li>Justin: 3</li>
+					<li>Nathan: 2</li>
+					<li>Zac: 1</li> -->
+				</ul>
+				<button id="back">back</button>
+			</div>
 		</main>
 		<footer class="clearfix">
-			<h3>Remaining:</h3>
-			<h3 id="remaining">32</h3>
-			<p class="copyright">Copyright 2019</p>
+			<button id="originalButton">Original</button>
+			<button id="resetButton">Reset</button>
+			<button id="randomButton">Random</button>
 		</footer>
 		<script src="js/main.js"></script>
 	</body>
