@@ -2,18 +2,14 @@
 	// javascript error in console calling gameOver from back button after low score
 	// don't want to track low score unless original board
 
-var tileSize = 100
+var tileSize
 var gameBoard = document.getElementById('game-board')
 var scoreBoard = document.getElementById('scoreBoard')
 
-var rows = 7
-var columns = 7
-var exceptions = {
-	columnsFromLeft:2,
-	columnsFromRight:2,
-	rowsFromTop:2,
-	rowsFromBottom:2
-};
+// original board characteristics
+var rows
+var columns
+var exceptions 
 
 // the starting empty tile
 var startingPosition = Math.floor(rows/2)+"-"+Math.floor(columns/2)
@@ -24,17 +20,17 @@ var score
 var tempPop
 var foundMove = 0
 var retrievedScores 
-//Draw the board
-drawBoard();
+
+//Draw the original board to start
+originalBoard()
 
 //Set the reset button listener
 document.getElementById('resetButton').addEventListener("click", removeBoard)
 document.getElementById('randomButton').addEventListener("click", randomBoard)
 document.getElementById('originalButton').addEventListener("click", originalBoard)
 
-//Set the playAgain button listener
+//Sets the original board characteristics
 function originalBoard (){
-	console.log("random")
 	tileSize = 100
 	playerMove = []
 	gameBoard = document.getElementById('game-board')
@@ -46,16 +42,15 @@ function originalBoard (){
 		rowsFromTop: 2,
 		rowsFromBottom: 2
 	}
+
 	// the starting empty tile
 	startingPosition = Math.floor(rows/2)+"-"+Math.floor(columns/2)
-	console.log(startingPosition)
+
+	//draw it
 	drawBoard()
-	console.log("random board")
 }
 
 function randomBoard (){
-	// removeBoard()
-	console.log("random")
 	tileSize = 100
 	playerMove = []
 	gameBoard = document.getElementById('game-board')
@@ -70,12 +65,14 @@ function randomBoard (){
 	// the starting empty tile
 
 	startingPosition = (Math.floor(Math.random()*(rows-exceptions.rowsFromBottom-exceptions.rowsFromTop)) + exceptions.rowsFromTop)+"-"+(Math.floor(Math.random()*(columns-exceptions.columnsFromRight-exceptions.columnsFromLeft)) + exceptions.columnsFromLeft)
+	
+	//draw it
 	drawBoard()
 }
 
 function removeBoard (){
 
-	//reset a bunch of stuff
+	// reset a bunch of stuff
 	gameBoard.innerHTML ="";
 	playerMove = []
 	score = 32
@@ -84,11 +81,11 @@ function removeBoard (){
 	retrievedScores = ""
 	scoresObject={}
 	keysSorted={}
+
 	//reset the scoreboard so it doesn't double up
 	document.getElementById("scoreBoard").innerHTML = ""
 
 	//hide game over screen
-
 	//errors if game over screen isn't present
 
 	var z = document.getElementsByClassName('gameOver')
@@ -100,17 +97,20 @@ function removeBoard (){
 }
 
 function drawBoard () {
-	// quick reset just in case
+	
+	// clears out all of the tile divs from previous game
 	gameBoard.innerHTML ="";
-	// Create Game Board based off #of tiles in rows and columns
+
+	// Create Game Board based off #of tiles in rows and columns + tileSize px
 	gameBoard.style.height = (rows * tileSize)+"px"
 	gameBoard.style.width = (columns * tileSize)+"px"
 
-	//loop through the rows, pass the row #through the func
+	//loop through the rows, pass the row # through the func
 	for (i=0; i < rows; i++){
 			drawRow(i)
 		}
-	//set score
+
+	//set starting score by counting tilePeg class references
 	score = document.getElementsByClassName('tilePeg').length
 	document.getElementById('score').innerText = score
 }
@@ -120,20 +120,17 @@ function drawRow (rowNum){
 	var tileColumn = 0;
 	for (var i = 0; i < columns; i++) {
 		
+		//checking from top, left and right, skips drawTile if it's in exception zone
 		if (rowNum < exceptions.rowsFromTop && i<exceptions.columnsFromLeft || i > columns-exceptions.columnsFromRight-1 && rowNum < exceptions.rowsFromTop ){
-			//checking from top, left and right
+			
 			tileColumn++
-		
+		//checking from top, left and right, skips drawTile if it's in exception zone
 		} else if (rowNum >= rows-exceptions.rowsFromBottom && i<exceptions.columnsFromLeft || i > columns-exceptions.columnsFromRight-1 && rowNum >= rows - exceptions.rowsFromBottom ){
-			//checking from bottom, left and right
 			tileColumn++
 		
 		} else {
 			drawTile(i*tileSize,rowNum*tileSize,tileColumn, rowNum, 1)
 			tileColumn++
-			//place in an array here? or in drawtile func?  
-			//Need to keep in mind what it's location is.  
-			//Maybe able to scrape the position to assign values
 		}
 	}
 }
@@ -149,9 +146,6 @@ function drawTile (left, top, column, row, peg){
 	aTile.setAttribute("style","left:"+left+"px;top:"+top+"px;")
 	
 	//Check to see if this is the starting empty spot
-		console.log("position:",position)
-		console.log("startingPosition:", startingPosition)
-
 
 	if (position == startingPosition){
 		// style it empty
@@ -160,11 +154,10 @@ function drawTile (left, top, column, row, peg){
 		// style it full
 		aTile.setAttribute("class","tilePeg")
 	}
-	console.log("drawing:", position, "with: ",aTile.getAttribute("class"))
 	// add event listener
 	aTile.addEventListener("click", clicker)
 	
-	// Append that shit
+	// Append this complete tile
 	gameBoard.appendChild(aTile)
 }
 
@@ -181,7 +174,7 @@ function clicker (){
 
 	//are they selecting two different tiles? 
 	if (this.getAttribute('Id') === playerMove[0]){
-		//deselect the tile
+		//same tile, deselect the tile
 		this.setAttribute("class","tilePeg")
 		playerMove = []
 	}  else{
@@ -211,40 +204,44 @@ function selectTile (a) {
 
 function checkMove (){
 	
-	//check if it's empty or not 
-	//if it is empty, have they already selected a tile?
+	// check if it's empty or not 
+	// if it is empty, have they already selected a tile?
+
 	// is this the first move?
 	if (playerMove.length === 1){
 	
 	} else if (playerMove.length === 2) {
-		//make this a loop
-
 		
+		// coppies the array, and sorts the new one only.
+		// I need to maintain the order in the original array
 		var playerMoveSorted = [...playerMove]
 		playerMoveSorted.sort()
 
+		// the core function for checking IDs.  
+		// grabs the first and lost characters from the ID string, then stores in integer form in two separate varibles to work with.  This now gives us a mathmatical way to move around the tiles.
 		var firstC = parseInt(playerMoveSorted[0].charAt(2))
 		var firstR = parseInt(playerMoveSorted[0].charAt(0))
 		var secondC = parseInt(playerMoveSorted[1].charAt(2))
 		var secondR = parseInt(playerMoveSorted[1].charAt(0))
 
-		//---
-
-		//see if this is viable
-
+		//make sure the two selected tiles are two columns apart - and in the same row
 		if (Math.abs((firstC - secondC)) === 2 && firstR == secondR){
-		//checks horizontal
-		//and do the class changes etc
+		
+			//checks the tile between the two selected
 			var middleTile = (secondR)+"-"+(firstC+1)
 
-			if(document.getElementById(middleTile).getAttribute("class")=="tileEmpty"){
+			if (document.getElementById(middleTile).getAttribute("class")=="tileEmpty"){
+				//invalid move, pop out the second click and exit the function
 				playerMove.pop()
 				return;
-			}else {
+			} else {
+
+				//makes sure it is full, then runs removeTile- while passing the ID of each tile involved
 				removeTile(playerMove[0],playerMove[1],middleTile)
 			}
 
-		} else if(Math.abs((firstR - secondR)) === 2 && firstC == secondC){
+		} else if (Math.abs((firstR - secondR)) === 2 && firstC == secondC){
+
 			//checks vertical
 			var middleTile = (firstR+1)+"-"+(secondC)
 
@@ -293,22 +290,26 @@ function remainingMoves (){
 	var pegsLeft = document.getElementsByClassName('tilePeg')
 	// set foundMove to zero at the start of the turn.
 	foundMove = 0
-	//loop through each, but exit out if a move is found.
+	//loop through each, but exit out if a move is found. No need to check everything.
 	for (i=0;i<pegsLeft.length;i++){
-
+		
+		// same method as before, break apart the Id into a column and a row integer
 		var thisC = parseInt(pegsLeft[i].id.charAt(2))
 		var thisR = parseInt(pegsLeft[i].id.charAt(0))
-		
+
+		// grabs a tile one over in each direction
 		var left = document.getElementById((thisR)+'-'+(thisC-1))
 		var right = document.getElementById((thisR)+'-'+(thisC+1))
 		var up = document.getElementById((thisR-1)+'-'+(thisC))
 		var down = document.getElementById((thisR+1)+'-'+(thisC))
 
+		// grabs a tile two over in each direction
 		var leftTwo = document.getElementById((thisR)+'-'+(thisC-2))
 		var rightTwo = document.getElementById((thisR)+'-'+(thisC+2))
 		var upTwo = document.getElementById((thisR-2)+'-'+(thisC))
 		var downTwo = document.getElementById((thisR+2)+'-'+(thisC))
 
+		// pass the directions and do the checking
 		checkDirection(left, leftTwo)
 		checkDirection(right, rightTwo)
 		checkDirection(up, upTwo)
@@ -320,7 +321,6 @@ function remainingMoves (){
 		} 
 	}
 	// end of game function triggers here
-	console.log("OUT OF MOVES")
 	//lets check against lowest scores
 	getScores()	
 }
@@ -335,7 +335,8 @@ function checkDirection(direction, directionTwo) {
 	}
 }
 
-//----game over stuff
+//----game over stuff, could split into a new file here
+// have not refactored below this line.  This was all added the last day of project.
 
 function gameOver (){
 	// show the game over div
@@ -345,25 +346,24 @@ function gameOver (){
 	document.getElementById('playAgain').addEventListener("click", removeBoard)	
 	document.getElementById('lowScore').addEventListener("click", lowScores)
 }
-function getScores (){
 
+function getScores (){
+	// counts the pegs left on the board and updates it
 	score = document.getElementsByClassName('tilePeg').length
-	console.log(score)
 
 	document.getElementById('score').innerText = score
 	document.getElementById('final').innerText = "Pieces remaining: " + score
 
-	// Retrieve the object from storage
+	// Retrieve the object from localStorage
 	retrievedScores = localStorage.getItem('scores');
 	
-	//parse string into an object
+	// parse string into an object
 	scoresObject = JSON.parse(retrievedScores)
 
-	//sort by lowest score
+	// sort by lowest score
 	keysSorted = Object.keys(scoresObject).sort(function(a,b){return scoresObject[b]-scoresObject[a]})
 
-	console.log('keysSorted: ', keysSorted);
-
+	
 	var z
 	var foundLowScore = 0
 	var c = 0
@@ -396,7 +396,6 @@ function getScores (){
 
 			console.log(Object.keys(scoresObject).length)
 		} 
-
 	});
 }
 
@@ -445,9 +444,7 @@ function inputScore (){
 			console.log(scoresObject)
 			localStorage.setItem('scores', JSON.stringify(scoresObject))
 
-	    	// stretch check length of local storage, then push one up, and pop one if over 5
-
-	    	
+	    	// stretch check length of local storage, then push one up, and pop one if over 5	
     	}
 	});
 }
