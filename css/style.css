@@ -93,9 +93,10 @@ button {
 	border-radius: 1em;
 	font-size: 1.7em;
 	line-height: 0em;
-	color: white;
+	color: #FFF;
 	font-family: 'Dosis', sans-serif;
 	text-transform: uppercase;
+	paint-order: markers stroke fill;
 }
 button:active {
 	border: 1em solid #Fcc;
