@@ -1,4 +1,6 @@
-
+body.noScroll { /* ...or body.dialogShowing */
+  overflow: hidden;
+}
 @keyframes gradient {
   100% {
     background: radial-gradient(circle at center, rgba( 255, 125 , 125, 0 ) 0%, #f88 0%, #f88 100%);
