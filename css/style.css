@@ -88,7 +88,7 @@ a {
 
 }
 button {
-	border: 1em solid #f66;
+	border: 0;
 	background-color: #F66;
 	height: 1em;
 	margin: 0 .2em; 
@@ -99,9 +99,11 @@ button {
 	font-family: 'Dosis', sans-serif;
 	text-transform: uppercase;
 	paint-order: markers stroke fill;
+	padding:1em;
 }
+
 button:active {
-	border: 1em solid #Fcc;
+	border: 0;
 	background-color: #Fcc;
 	color: #FFF;
 
